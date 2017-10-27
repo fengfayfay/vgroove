@@ -114,6 +114,7 @@
 #include "textures/wrinkled.h"
 #include "media/grid.h"
 #include "media/homogeneous.h"
+#include "core/reflection.h"
 #include <map>
 #include <stdio.h>
 
@@ -746,6 +747,8 @@ void pbrtInit(const Options &opt) {
     renderOptions.reset(new RenderOptions);
     graphicsState = GraphicsState();
     catIndentCount = 0;
+
+    MicrofacetReflection::readIntegralTables();
 
     // General \pbrt Initialization
     SampledSpectrum::Init();
