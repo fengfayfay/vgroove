@@ -373,6 +373,12 @@ Spectrum BxDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
     return f(wo, *wi);
 }
 
+Spectrum BxDF::Sample_f(const Vector3f &wo, Vector3f *wi, Sampler &sampler,
+                        Float *pdf, BxDFType *sampledType) const {
+    // Cosine-sample the hemisphere, flipping the direction if necessary
+    return Sample_f(wo, wi, sampler.Get2D(), pdf, sampledType);
+}
+
 Float BxDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
     return SameHemisphere(wo, wi) ? AbsCosTheta(wi) * InvPi : 0;
 }
@@ -692,7 +698,6 @@ Spectrum BSDF::rho(const Vector3f &wo, int nSamples, const Point2f *samples,
 Spectrum BSDF::Sample_f(const Vector3f &woWorld, Vector3f *wiWorld,
                         Sampler &sampler, Float *pdf, BxDFType type,
                                                 BxDFType *sampledType) const {
-                                                
     return Sample_f(woWorld, wiWorld, sampler.Get2D(), pdf, type, sampledType);
 
 }
@@ -804,7 +809,7 @@ bool MicrofacetReflection::readIntegralTables() {
         for (int j = 0; j < E_TABLE_SIZE; j++) {
             Vector3<Float>& v = E_mu[i][j];
             fscanf(ifile, "%f %f %f", &(v[0]), &(v[1]), &(v[2]));
-            printf("%f %f %f\n", v[0], v[1], v[2]);
+            //printf("%f %f %f\n", v[0], v[1], v[2]);
         }
     }    
     ifile = fopen("/Users/feng/work/MaterialTables/E_ave_32.txt", "r"); 

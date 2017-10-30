@@ -59,7 +59,8 @@ class MicrofacetDistribution {
         //return 1 / (1 + Lambda(wo) + Lambda(wi));
         return G1(wo) * G1(wi);
     }
-    virtual Vector3f Sample_wh(const Vector3f &wo, const Point2f &u) const = 0;
+    //virtual Vector3f Sample_wh(const Vector3f &wo, const Point2f &u) const = 0;
+    virtual Vector3f Sample_wh(const Vector3f &wo, const Point2f &u, Float* phi=NULL, Float* theta=NULL) const = 0;
     Float Pdf(const Vector3f &wo, const Vector3f &wh) const;
     virtual std::string ToString() const = 0;
     virtual float getRoughness() const {return 0;} 
@@ -91,7 +92,8 @@ class  BeckmannDistribution : public MicrofacetDistribution {
     BeckmannDistribution(Float alphax, Float alphay, bool samplevis = true)
         : MicrofacetDistribution(samplevis), alphax(alphax), alphay(alphay) {}
     Float D(const Vector3f &wh) const;
-    Vector3f Sample_wh(const Vector3f &wo, const Point2f &u) const;
+    Vector3f Sample_wh(const Vector3f &wo, const Point2f &u, Float* phi=NULL, Float* theta=NULL) const;
+    //Vector3f Sample_wh(const Vector3f &wo, const Point2f &u, Float& phi, Float& theta) const;
     std::string ToString() const;
 
   private:
@@ -110,7 +112,8 @@ class TrowbridgeReitzDistribution : public MicrofacetDistribution {
                                 bool samplevis = true)
         : MicrofacetDistribution(samplevis), alphax(alphax), alphay(alphay) {}
     Float D(const Vector3f &wh) const;
-    Vector3f Sample_wh(const Vector3f &wo, const Point2f &u) const;
+    Vector3f Sample_wh(const Vector3f &wo, const Point2f &u, Float* phi=NULL, Float* theta = NULL) const;
+    //Vector3f Sample_wh(const Vector3f &wo, const Point2f &u, Float& phi, Float& theta) const;
     std::string ToString() const;
 
     //actually getting alpha for now--- Feng

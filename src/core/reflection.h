@@ -181,17 +181,18 @@ class BSDF {
     virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
                       Float *pdf, BxDFType type = BSDF_ALL,
                       BxDFType *sampledType = nullptr) const;
-    Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, Sampler& sampler,
+                      
+    virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, Sampler& sampler,
                       Float *pdf, BxDFType type = BSDF_ALL,
                       BxDFType *sampledType = nullptr) const;
-    Float Pdf(const Vector3f &wo, const Vector3f &wi,
+    virtual Float Pdf(const Vector3f &wo, const Vector3f &wi,
               BxDFType flags = BSDF_ALL) const;
     std::string ToString() const;
 
     // BSDF Public Data
     const Float eta;
 
-  private:
+  protected:
     // BSDF Private Methods
     ~BSDF() {}
 
@@ -213,6 +214,10 @@ class MicroBsdf : public BSDF {
                       BxDFType *sampledType = nullptr) const;
     virtual Float Pdf(const Vector3f &wo, const Vector3f &wi,
               BxDFType flags = BSDF_ALL) const;
+    
+    virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, Sampler& sampler,
+                      Float *pdf, BxDFType type = BSDF_ALL,
+                      BxDFType *sampledType = nullptr) const;
 };
 
 */
@@ -233,6 +238,9 @@ class BxDF {
     virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi,
                               const Point2f &sample, Float *pdf,
                               BxDFType *sampledType = nullptr) const;
+    virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, Sampler& sampler,
+                      Float *pdf, 
+                      BxDFType *sampledType = nullptr) const;
     virtual Spectrum rho(const Vector3f &wo, int nSamples,
                          const Point2f *samples) const;
     virtual Spectrum rho(int nSamples, const Point2f *samples1,
@@ -461,6 +469,11 @@ class MicrofacetReflection : public BxDF {
     std::string ToString() const;
 
     static bool readIntegralTables();
+
+    const MicrofacetDistribution *getDistribution()
+    {
+        return distribution;
+    }
   private:
     // MicrofacetReflection Private Data
     const Spectrum R;

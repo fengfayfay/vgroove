@@ -114,9 +114,11 @@ Spectrum EstimateDirect(const Interaction &it, const Point2f &uScattering,
         specular ? BSDF_ALL : BxDFType(BSDF_ALL & ~BSDF_SPECULAR);
     Spectrum Ld(0.f);
     // Sample light source with multiple importance sampling
+
     Vector3f wi;
     Float lightPdf = 0, scatteringPdf = 0;
     VisibilityTester visibility;
+    /*
     Spectrum Li = light.Sample_Li(it, uLight, &wi, &lightPdf, &visibility);
     VLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
             << wi << ", pdf: " << lightPdf;
@@ -163,6 +165,8 @@ Spectrum EstimateDirect(const Interaction &it, const Point2f &uScattering,
             }
         }
     }
+
+    */
 
     // Sample BSDF with multiple importance sampling
     if (!IsDeltaLight(light.flags)) {

@@ -34,6 +34,7 @@
 // materials/metal.cpp*
 #include "materials/metal.h"
 #include "reflection.h"
+#include "microreflection.h"
 #include "paramset.h"
 #include "texture.h"
 #include "interaction.h"
@@ -62,7 +63,8 @@ void MetalMaterial::ComputeScatteringFunctions(SurfaceInteraction *si,
                                                bool allowMultipleLobes) const {
     // Perform bump mapping with _bumpMap_, if present
     if (bumpMap) Bump(bumpMap, si);
-    si->bsdf = ARENA_ALLOC(arena, BSDF)(*si);
+    //si->bsdf = ARENA_ALLOC(arena, BSDF)(*si);
+    si->bsdf = ARENA_ALLOC(arena, MicroBsdf)(*si);
 
     Float uRough =
         uRoughness ? uRoughness->Evaluate(*si) : roughness->Evaluate(*si);

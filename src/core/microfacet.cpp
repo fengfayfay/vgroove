@@ -196,7 +196,7 @@ std::string TrowbridgeReitzDistribution::ToString() const {
 }
 
 Vector3f BeckmannDistribution::Sample_wh(const Vector3f &wo,
-                                         const Point2f &u) const {
+                                         const Point2f &u, Float *ophi, Float *otheta) const {
     if (!sampleVisibleArea) {
         // Sample full distribution of normals for Beckmann distribution
 
@@ -225,6 +225,8 @@ Vector3f BeckmannDistribution::Sample_wh(const Vector3f &wo,
         Float cosTheta = 1 / std::sqrt(1 + tan2Theta);
         Float sinTheta = std::sqrt(std::max((Float)0, 1 - cosTheta * cosTheta));
         Vector3f wh = SphericalDirection(sinTheta, cosTheta, phi);
+        if (ophi) *ophi = phi;
+        if (otheta) *otheta = acos(cosTheta);
         if (!SameHemisphere(wo, wh)) wh = -wh;
         return wh;
     } else {
@@ -307,9 +309,15 @@ static Vector3f TrowbridgeReitzSample(const Vector3f &wi, Float alpha_x,
 }
 
 Vector3f TrowbridgeReitzDistribution::Sample_wh(const Vector3f &wo,
-                                                const Point2f &u) const {
+                                                const Point2f &u,
+                                                Float *ophi, Float *otheta) const {
     Vector3f wh;
-    if (!sampleVisibleArea) {
+
+    //Feng hack!
+    //if (!sampleVisibleArea) {
+    
+
+    if (1) {
         Float cosTheta = 0, phi = (2 * Pi) * u[1];
         if (alphax == alphay) {
             Float tanTheta2 = alphax * alphax * u[0] / (1.0f - u[0]);
@@ -329,6 +337,8 @@ Vector3f TrowbridgeReitzDistribution::Sample_wh(const Vector3f &wo,
             std::sqrt(std::max((Float)0., (Float)1. - cosTheta * cosTheta));
         wh = SphericalDirection(sinTheta, cosTheta, phi);
         if (!SameHemisphere(wo, wh)) wh = -wh;
+        if (ophi) *ophi = phi;
+        if (otheta) *otheta = acos(cosTheta);
     } else {
         bool flip = wo.z < 0;
         wh = TrowbridgeReitzSample(flip ? -wo : wo, alphax, alphay, u[0], u[1]);
