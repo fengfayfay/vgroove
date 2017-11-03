@@ -227,11 +227,11 @@ public:
     virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, Sampler &sampler,
                       Float *pdf, BxDFType type = BSDF_ALL,
                       BxDFType *sampledType = nullptr) const;
-    /*
     virtual Spectrum f(const Vector3f &woW, const Vector3f &wiW,
                BxDFType flags = BSDF_ALL) const;
     virtual Float Pdf(const Vector3f &wo, const Vector3f &wi,
               BxDFType flags = BSDF_ALL) const;
+    /*
     virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
                       Float *pdf, BxDFType type = BSDF_ALL,
                       BxDFType *sampledType = nullptr) const;

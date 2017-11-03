@@ -118,10 +118,10 @@ Spectrum EstimateDirect(const Interaction &it, const Point2f &uScattering,
     Vector3f wi;
     Float lightPdf = 0, scatteringPdf = 0;
     VisibilityTester visibility;
-    /*
     Spectrum Li = light.Sample_Li(it, uLight, &wi, &lightPdf, &visibility);
     VLOG(2) << "EstimateDirect uLight:" << uLight << " -> Li: " << Li << ", wi: "
             << wi << ", pdf: " << lightPdf;
+    /*
     if (lightPdf > 0 && !Li.IsBlack()) {
         // Compute BSDF or phase function's value for light sample
         Spectrum f;
@@ -165,9 +165,7 @@ Spectrum EstimateDirect(const Interaction &it, const Point2f &uScattering,
             }
         }
     }
-
     */
-
     // Sample BSDF with multiple importance sampling
     if (!IsDeltaLight(light.flags)) {
         Spectrum f;
